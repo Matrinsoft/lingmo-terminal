@@ -159,9 +159,11 @@ void QTermWidget::search(bool forwards, bool next)
     qDebug() << "current selection starts at: " << startColumn << startLine;
     qDebug() << "current cursor position: " << m_impl->m_terminalDisplay->screenWindow()->cursorPosition();
 
-    QRegExp regExp(m_searchBar->searchText());
-    regExp.setPatternSyntax(m_searchBar->useRegularExpression() ? QRegExp::RegExp : QRegExp::FixedString);
-    regExp.setCaseSensitivity(m_searchBar->matchCase() ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    QRegularExpression::PatternOptions options = m_searchBar->matchCase() ? QRegularExpression::NoPatternOption : QRegularExpression::CaseInsensitiveOption;
+    QRegularExpression regExp(m_searchBar->searchText(), options);
+    if (!m_searchBar->useRegularExpression()) {
+        regExp.setPattern(QRegularExpression::escape(m_searchBar->searchText()));
+    }
 
     HistorySearch *historySearch =
             new HistorySearch(m_impl->m_session->emulation(), regExp, forwards, startColumn, startLine, this);
@@ -263,7 +265,7 @@ void QTermWidget::init(int startnow)
     // translations
     // First check $XDG_DATA_DIRS. This follows the implementation in libqtxdg
     QString d = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
-    QStringList dirs = d.split(QLatin1Char(':'), QString::SkipEmptyParts);
+    QStringList dirs = d.split(QLatin1Char(':'), Qt::SkipEmptyParts);
     if (dirs.isEmpty()) {
         dirs.append(QString::fromLatin1("/usr/local/share"));
         dirs.append(QString::fromLatin1("/usr/share"));

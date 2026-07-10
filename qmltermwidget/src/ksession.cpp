@@ -1,4 +1,4 @@
-﻿/*
+/*
     This file is part of Konsole QML plugin,
     which is a terminal emulator from KDE.
 
@@ -297,7 +297,7 @@ void KSession::clearScreen()
 
 void KSession::search(const QString& regexp, int startLine, int startColumn, bool forwards)
 {
-    HistorySearch* history = new HistorySearch(QPointer<Emulation>(m_session->emulation()), QRegExp(regexp), forwards, startColumn, startLine, this);
+    HistorySearch* history = new HistorySearch(QPointer<Emulation>(m_session->emulation()), QRegularExpression(regexp), forwards, startColumn, startLine, this);
     connect(history, SIGNAL(matchFound(int, int, int, int)), this, SIGNAL(matchFound(int, int, int, int)));
     connect(history, SIGNAL(noMatchFound()), this, SIGNAL(noMatchFound()));
     history->search();

@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20)
 
 set(PROJECT_NAME lingmo-terminal)
 project(${PROJECT_NAME} VERSION 1.0.0 DESCRIPTION "Lingmo Terminal" LANGUAGES CXX)
@@ -10,7 +10,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(QT Core Gui Quick QuickControls2 Widgets DBus LinguistTools)
+set(QT Core Gui Quick QuickControls2 Widgets DBus Core5Compat LinguistTools)
 find_package(Qt6 REQUIRED ${QT})
 
 # Get the installation directory from qmake
@@ -49,6 +49,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::QuickControls2
         Qt6::Widgets
         Qt6::DBus
+        Qt6::Core5Compat
 )
 
 file(GLOB TS_FILES translations/*.ts)
